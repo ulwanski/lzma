@@ -11,12 +11,12 @@
 class lzma {
 
 public:
-	int lzma::Encode(const char* inFile, const char* outFile);
-	int lzma::Decode(const char* inFile, const char* outFile);
+	static int lzma::Encode(const char* inFile, const char* outFile);
+	static int lzma::Decode(const char* inFile, const char* outFile);
 
 private:
-	SRes lzma::lzma_encode(ISeqOutStream *outStream, ISeqInStream *inStream, UInt64 fileSize);
-	SRes lzma::lzma_decode(ISeqOutStream *outStream, ISeqInStream *inStream);
-	SRes lzma::lzma_decode2(CLzmaDec *state, ISeqOutStream *outStream, ISeqInStream *inStream, UInt64 unpackSize);
+	static SRes lzma::lzma_encode(ISeqOutStream *outStream, ISeqInStream *inStream, UInt64 fileSize);
+	static SRes lzma::lzma_decode(ISeqOutStream *outStream, ISeqInStream *inStream);
+	static SRes lzma::lzma_decode2(CLzmaDec *state, ISeqOutStream *outStream, ISeqInStream *inStream, UInt64 unpackSize);
 
 };
