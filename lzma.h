@@ -1,12 +1,9 @@
+#ifndef LZMA_H
+#define LZMA_H
+
 #define _CRT_SECURE_NO_WARNINGS
 
-#include "..\lzma\sdk\LzmaLib.h"
-#include "..\lzma\sdk\LzmaEnc.h"
-#include "..\lzma\sdk\Alloc.h"
-#include "..\lzma\sdk\7zFile.h"
-#include "..\lzma\sdk\7zVersion.h"
-#include "..\lzma\sdk\LzmaDec.h"
-#include "..\lzma\sdk\LzmaEnc.h"
+#include "..\lzma\sdk\Types.h"
 
 class lzma {
 
@@ -20,3 +17,5 @@ private:
 	static SRes lzma::lzma_decode2(CLzmaDec *state, ISeqOutStream *outStream, ISeqInStream *inStream, UInt64 unpackSize);
 
 };
+
+#endif
