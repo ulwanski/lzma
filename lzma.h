@@ -5,6 +5,11 @@
 
 #include "..\lzma\sdk\Types.h"
 
+#include "..\lzma\sdk\LzmaLib.h"
+#include "..\lzma\sdk\LzmaEnc.h"
+#include "..\lzma\sdk\LzmaDec.h"
+#include "..\lzma\sdk\LzmaEnc.h"
+
 class lzma {
 
 public:
