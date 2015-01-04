@@ -3,7 +3,6 @@
 
 #define _CRT_SECURE_NO_WARNINGS
 
-#include "..\lzma\sdk\Types.h"
 #include "..\lzma\sdk\LzmaLib.h"
 #include "..\lzma\sdk\LzmaEnc.h"
 #include "..\lzma\sdk\LzmaDec.h"

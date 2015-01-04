@@ -14,6 +14,8 @@ static ISzAlloc g_Alloc = { SzAlloc, SzFree };
 #define IN_BUF_SIZE (1 << 16)
 #define OUT_BUF_SIZE (1 << 16)
 
+#include <iostream>
+
 int lzma::Encode(const char* inFile, const char* outFile, ICompressProgress *progress){
 		
 	CFileSeqInStream inStream;
