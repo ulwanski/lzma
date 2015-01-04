@@ -2189,11 +2189,9 @@ static SRes LzmaEnc_Encode2(CLzmaEnc *p, ICompressProgress *progress)
   return res;
 }
 
-SRes LzmaEnc_Encode(CLzmaEncHandle pp, ISeqOutStream *outStream, ISeqInStream *inStream, ICompressProgress *progress,
-    ISzAlloc *alloc, ISzAlloc *allocBig)
-{
-  RINOK(LzmaEnc_Prepare(pp, outStream, inStream, alloc, allocBig));
-  return LzmaEnc_Encode2((CLzmaEnc *)pp, progress);
+SRes LzmaEnc_Encode(CLzmaEncHandle pp, ISeqOutStream *outStream, ISeqInStream *inStream, ICompressProgress *progress, ISzAlloc *alloc, ISzAlloc *allocBig){
+	RINOK(LzmaEnc_Prepare(pp, outStream, inStream, alloc, allocBig));
+	return LzmaEnc_Encode2((CLzmaEnc *)pp, progress);
 }
 
 SRes LzmaEnc_WriteProperties(CLzmaEncHandle pp, Byte *props, SizeT *size)
