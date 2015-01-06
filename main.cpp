@@ -1,17 +1,10 @@
 #include "lzma.h"
-#include "..\lzma\sdk\Alloc.h"
-#include "..\lzma\sdk\7zFile.h"
-#include "..\lzma\sdk\LzmaDec.h"
-#include "..\lzma\sdk\LzmaEnc.h"
 
 static void *SzAlloc(void *p, size_t size) { p = p; return MyAlloc(size); }
 static void SzFree(void *p, void *address) { p = p; MyFree(address); }
 static ISzAlloc g_Alloc = { SzAlloc, SzFree };
 
-#define IN_BUF_SIZE (1 << 16)
-#define OUT_BUF_SIZE (1 << 16)
-
-int lzma::Encode(const char* inFile, const char* outFile, ICompressProgress *progress){
+unsigned long int lzma::Encode(std::FILE *inFile, std::FILE *outFile, unsigned int lzma_lvl, ICompressProgress *progress){
 		
 	CFileSeqInStream inStream;
 	CFileOutStream outStream;
@@ -21,13 +14,8 @@ int lzma::Encode(const char* inFile, const char* outFile, ICompressProgress *pro
 	FileOutStream_CreateVTable(&outStream);
 	File_Construct(&outStream.file);
 
-	if (InFile_Open(&inStream.file, inFile) != 0){
-		return 1;
-	}
-
-	if (OutFile_Open(&outStream.file, outFile) != 0){
-		return 1;
-	}
+	inStream.file.file = inFile;
+	outStream.file.file = outFile;
 
 	UInt64 fileSize;
 	File_GetLength(&inStream.file, &fileSize);
@@ -37,7 +25,7 @@ int lzma::Encode(const char* inFile, const char* outFile, ICompressProgress *pro
 	LzmaEncProps_Init(&props);
 
 	props.writeEndMark	= 0;
-	props.level			= 8;
+	props.level			= lzma_lvl;
 
 	LzmaEnc_SetProps(enc, &props);
 
@@ -52,14 +40,13 @@ int lzma::Encode(const char* inFile, const char* outFile, ICompressProgress *pro
 		if (res == SZ_OK) LzmaEnc_Encode(enc, &outStream.s, &inStream.s, progress, &g_Alloc, &g_Alloc);
 	}
 	
-	LzmaEnc_Destroy(enc, &g_Alloc, &g_Alloc);
+	unsigned long int result = outStream.file.lenght;
 
-	File_Close(&outStream.file);
-	File_Close(&inStream.file);
-	return 0;
+	LzmaEnc_Destroy(enc, &g_Alloc, &g_Alloc);
+	return result;
 }
 
-int lzma::Decode(const char* inFile, const char* outFile){
+unsigned long int lzma::Decode(std::FILE *inFile, std::FILE *outFile, ICompressProgress *progress){
 
 	CFileSeqInStream inStream;
 	CFileOutStream outStream;
@@ -69,15 +56,8 @@ int lzma::Decode(const char* inFile, const char* outFile){
 	FileOutStream_CreateVTable(&outStream);
 	File_Construct(&outStream.file);
 
-	if (InFile_Open(&inStream.file, inFile) != 0){
-		// Can not open input file
-		return 1;
-	}
-
-	if (OutFile_Open(&outStream.file, outFile) != 0){
-		// Can not open output file
-		return 1;
-	}
+	inStream.file.file = inFile;
+	outStream.file.file = outFile;
 
 	UInt64 unpackSize;
 	int i;
@@ -136,10 +116,6 @@ int lzma::Decode(const char* inFile, const char* outFile){
 		}
 	}
 	
-	
 	LzmaDec_Free(&state, &g_Alloc);
-
-	File_Close(&outStream.file);
-	File_Close(&inStream.file);
 	return 0;
 }

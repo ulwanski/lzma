@@ -1,18 +1,27 @@
-#ifndef LZMA_H
-#define LZMA_H
+#include <stdio.h>
+#include <iostream>
+
+#include "lzma_file.h"
+#include "..\lzma\sdk\Alloc.h"
+#include "..\lzma\sdk\LzmaLib.h"
+#include "..\lzma\sdk\LzmaDec.h"
+#include "..\lzma\sdk\LzmaEnc.h"
+
+#ifndef LZMA_MAIN_H
+#define LZMA_MAIN_H
 
 #define _CRT_SECURE_NO_WARNINGS
 
-#include "..\lzma\sdk\LzmaLib.h"
-#include "..\lzma\sdk\LzmaEnc.h"
-#include "..\lzma\sdk\LzmaDec.h"
-#include "..\lzma\sdk\LzmaEnc.h"
+#define IN_BUF_SIZE (1 << 16)
+#define OUT_BUF_SIZE (1 << 16)
 
 class lzma {
 
 	public:
-	static int lzma::Encode(const char* inFile, const char* outFile, ICompressProgress *progress = NULL);
-	static int lzma::Decode(const char* inFile, const char* outFile);
+	static unsigned long int Encode(std::FILE *inFile, std::FILE *outFile, unsigned int lzma_lvl = 8, ICompressProgress *progress = NULL);
+	static unsigned long int Decode(std::FILE *inFile, std::FILE *outFile, ICompressProgress *progress = NULL);
 };
+
+
 
 #endif
